@@ -131,7 +131,7 @@ ignore-service-names = [
 
     [[http.scan]]
     name = 'gobuster'
-    command = 'if [[ `gobuster -h 2>&1 | grep -F "mode (dir)"` ]]; then gobuster -u {scheme}://{address}:{port}/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -e -k -l -s "200,204,301,302,307,401,403" -x "txt,html,php,asp,aspx,jsp" -o "{scandir}/{protocol}_{port}_{scheme}_gobuster.txt"; else gobuster dir -u {scheme}://{address}:{port}/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -z -k -l -x "txt,html,php,asp,aspx,jsp" -o "{scandir}/{protocol}_{port}_{scheme}_gobuster.txt"; fi'
+    command = 'if [[ `gobuster -h 2>&1 | grep -F "mode (dir)"` ]]; then gobuster -u {scheme}://{address}:{port}/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e -k -l -s "200,204,301,302,307,401,403" -x "txt,html,php,asp,aspx,jsp" -o "{scandir}/{protocol}_{port}_{scheme}_gobuster.txt"; else gobuster dir -u {scheme}://{address}:{port}/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -z -k -l -x "txt,html,php,asp,aspx,jsp" -o "{scandir}/{protocol}_{port}_{scheme}_gobuster.txt"; fi'
 
     [[http.manual]]
     description = '(dirsearch) Multi-threaded recursive directory/file enumeration for web servers using various wordlists:'
@@ -428,6 +428,10 @@ service-names = [
     [[smb.scan]]
     name = 'nmap-smb'
     command = 'nmap {nmap_extra} -sV -p {port} --script="banner,(nbstat or smb* or ssl*) and not (brute or broadcast or dos or external or fuzzer)" --script-args="unsafe=1" -oN "{scandir}/{protocol}_{port}_smb_nmap.txt" -oX "{scandir}/xml/{protocol}_{port}_smb_nmap.xml" {address}'
+
+    [[smb.scan]]
+    name = 'nmap-smb-vuln'
+    command = 'nmap {nmap_extra} -p {port} --script=smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-ms17-010.nse -oN "{scandir}/{protocol}_{port}_smb_nmap_vuln.txt" -oX "{scandir}/xml/{protocol}_{port}_smb_nmap_vuln.xml" {address}'
 
     [[smb.scan]]
     name = 'enum4linux'

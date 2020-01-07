@@ -17,6 +17,12 @@
         [default.nmap-top-20-udp.service-detection]
         command = 'nmap {nmap_extra} -sU -A --top-ports=20 --version-all -oN "{scandir}/_top_20_udp_nmap.txt" -oX "{scandir}/xml/_top_20_udp_nmap.xml" {address}'
         pattern = '^(?P<port>\d+)\/(?P<protocol>(tcp|udp))(.*)open(\s*)(?P<service>[\w\-\/]+)(\s*)(.*)$'
+    
+    [default.nmap-full-vuln]
+
+        [default.nmap-full-vuln.service-detection]
+        command = 'nmap {nmap_extra} -p- -sV --script=vuln -oN "{scandir}/_full_tcp_nmap.txt" -oX "{scandir}/xml/_vuln_tcp_nmap.xml" {address}'
+        pattern = '^(?P<port>\d+)\/(?P<protocol>(tcp|udp))(.*)open(\s*)(?P<service>[\w\-\/]+)(\s*)(.*)$'
 
 [quick]
 
